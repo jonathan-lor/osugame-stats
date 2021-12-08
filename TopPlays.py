@@ -1,5 +1,5 @@
 import requests
-import osufunctions
+import getToken
 
 
 class TopPlays:
@@ -12,7 +12,7 @@ class TopPlays:
 
   # gets user id from inputted userName and returns it
     def getUserID(self):
-        token = osufunctions.getToken()
+        token = getToken.getToken()
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -23,7 +23,7 @@ class TopPlays:
             'limit': 1
         }
         userPage = requests.get(
-            f'{osufunctions.API_URL}/users/{self.userName}', params=params, headers=headers)
+            f'{getToken.API_URL}/users/{self.userName}', params=params, headers=headers)
         userID = userPage.json().get('id')
         self.caseSensitiveUserName = userPage.json().get('username')
         return userID
@@ -31,7 +31,7 @@ class TopPlays:
     # gets all of the score data for specified numTopPlay, even the unecessary data in order to pick out the relevant stuff
 
     def getUnfilteredData(self):
-        token = osufunctions.getToken()
+        token = getToken.getToken()
         headers = {
             'Content-Type': 'application/json',
             'Accept': 'application/json',
@@ -42,7 +42,7 @@ class TopPlays:
             'limit': self.numTopPlay
         }
         unfiltered = requests.get(
-            f'{osufunctions.API_URL}/users/{self.getUserID()}/scores/best', params=params, headers=headers)
+            f'{getToken.API_URL}/users/{self.getUserID()}/scores/best', params=params, headers=headers)
         unfiltered = unfiltered.json()[self.numTopPlay - 1]
         self.unfiltered = unfiltered
 
